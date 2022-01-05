@@ -7,6 +7,7 @@ function(request) {
     metadata: {
       name: cm.metadata.name,
       namespace: cm.metadata.namespace,
+      labels: import 'labels.libsonnet',
     },
     spec: {
       containers: [
