@@ -1,23 +1,23 @@
 function(request) {
-  local cm = request.object,
+  local ns = request.object,
 
   local pod = {
     apiVersion: 'v1',
     kind: 'Pod',
     metadata: {
-      name: cm.metadata.name,
-      namespace: cm.metadata.namespace,
-      labels: import 'labels.libsonnet',
+      name: 'some-pod',
+      namespace: ns.metadata.name,
     },
     spec: {
       containers: [
         {
           name: 'app',
-          image: cm.data.image,
+          image: 'ubuntu',
+          command: ['sleep', '100000'],
         },
       ],
     },
   },
 
-  apply: [] + (if std.objectHas(cm.metadata, 'labels') && std.objectHas(cm.metadata.labels, 'convert-to-pod') then [pod] else []),
+  apply: [] + (if std.objectHas(ns.metadata, 'labels') && std.objectHas(ns.metadata.labels, 'run-pod') then [pod] else []),
 }
